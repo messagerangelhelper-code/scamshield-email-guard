@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BRAND } from "./brand.js";
 import { useAuth, supabase } from "./account.js";
 import Account from "./Account.jsx";
-import Premium from "./Premium.jsx";
+import Premium, { CompareChart } from "./Premium.jsx";
 import { isPremium, checkPremiumOnce, syncAccount } from "./premium.js";
 import * as api from "./api.js";
 
@@ -35,8 +35,8 @@ export default function App() {
     document.title = BRAND.name;
     checkPremiumOnce().then((status) => {
       setLocalPremium(isPremium());
-      if (status === "activated") setNotice("Email Guard is active. Thank you! Forward a suspicious email to try it.");
-      else if (status === "expired") setNotice("Your Email Guard plan has ended, so checks are paused.");
+      if (status === "activated") setNotice("ScamShield Premium is active. Thank you! Unlimited checks and automatic protection are on.");
+      else if (status === "expired") setNotice("Your ScamShield Premium plan has ended. You still get 3 free email checks a month.");
       load();
     });
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
@@ -102,18 +102,21 @@ export default function App() {
       {info && !info.ready && <p className="callout">Email Guard is almost ready to open. You can set up your account now.</p>}
 
       <section className={`card status ${premium && verified.length ? "on" : ""}`}>
-        <h1>{premium && verified.length ? "🛡️ Email Guard is on" : "Set up Email Guard"}</h1>
-        {premium && verified.length ? (
-          <p className="muted">{info?.month?.total || 0} emails checked in the last 30 days{info?.month?.risky ? `, ${info.month.risky} flagged as risky` : ""}.</p>
+        <h1>{verified.length ? "🛡️ Email Guard is on" : "Set up Email Guard"}</h1>
+        {premium ? (
+          verified.length ? <p className="muted">{info?.month?.total || 0} emails checked in the last 30 days{info?.month?.risky ? `, ${info.month.risky} flagged as risky` : ""}. Unlimited with ScamShield Premium.</p>
+            : <p className="muted">Three quick steps. Unlimited with ScamShield Premium.</p>
         ) : (
-          <p className="muted">Three quick steps.</p>
+          <p className="muted">
+            Free: {Math.max(0, (info?.free_monthly ?? 3) - (info?.this_month || 0))} of {info?.free_monthly ?? 3} email checks left this month.
+          </p>
         )}
       </section>
 
       {!premium && (
         <section className="card premium-teaser">
-          <h2>Turn on Email Guard</h2>
-          <p className="muted">Email checks (up to 300 a day), automatic protection and a history of every check. From $2.99 a month.</p>
+          <h2>Free vs. Premium</h2>
+          <CompareChart />
           <button type="button" className="btn-primary" onClick={() => setView("premium")}>See plans</button>
         </section>
       )}
@@ -167,7 +170,7 @@ export default function App() {
       </section>
 
       <section className="card">
-        <h2><span className="step">3</span> Optional: check every email automatically</h2>
+        <h2><span className="step">3</span> Optional: check every email automatically{!premium && <span className="pill-premium">Premium</span>}</h2>
         <p className="muted small">With Gmail, a copy of each new email comes to ScamShield. You keep all your mail, and you only hear from us when something looks wrong.</p>
         <button type="button" className="link" aria-expanded={showGmail} onClick={() => setShowGmail((v) => !v)}>{showGmail ? "Hide Gmail steps ▲" : "Show Gmail steps ▼"}</button>
         {showGmail && (

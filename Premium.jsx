@@ -1,5 +1,21 @@
 import { useState } from "react";
-import { PLANS, PREMIUM_FEATURES, PREMIUM_THANKS, PREMIUM_FREE_NOTE, startCheckout } from "./premium.js";
+import { PLANS, PREMIUM_THANKS, PREMIUM_FREE_NOTE, COMPARE, startCheckout } from "./premium.js";
+
+const cell = (v) => (v === true ? <span className="yes" aria-label="Included">✓</span> : v === false ? <span className="no" aria-label="Not included">—</span> : v);
+
+export function CompareChart() {
+  return (
+    <table className="compare">
+      <caption className="sr-only">Free compared with ScamShield Premium</caption>
+      <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col" className="pro-col">Premium</th></tr></thead>
+      <tbody>
+        {COMPARE.map(([label, free, pro]) => (
+          <tr key={label}><th scope="row">{label}</th><td>{cell(free)}</td><td className="pro-col">{cell(pro)}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
 
 // Plans and upgrade buttons. Payment happens on Stripe's secure checkout page.
 export default function Premium({ premium, onBack }) {
@@ -31,9 +47,7 @@ export default function Premium({ premium, onBack }) {
     <section className="card premium-card">
       <h2>Go Premium</h2>
       <p className="muted">{PREMIUM_FREE_NOTE}</p>
-      <ul className="premium-list">
-        {PREMIUM_FEATURES.map((f) => <li key={f}>{f}</li>)}
-      </ul>
+      <CompareChart />
       <div className="plans">
         {PLANS.map((p) => (
           <div key={p.id} className={p.best ? "plan best" : "plan"}>

@@ -183,3 +183,15 @@ input:focus, textarea:focus, select:focus { outline: 3px solid #b9b3f0; border-c
 .v-safe { border-left-color: var(--ok); }
 .flags { color: var(--red); }
 .callout { background: var(--amber-soft); border: 1px solid #f0cf7a; border-radius: 12px; padding: 10px 12px; margin: 0; }
+
+/* Free vs Premium chart */
+.compare { width: 100%; border-collapse: collapse; margin: 10px 0 14px; font-size: 0.92rem; background: #fff; border-radius: 12px; overflow: hidden; }
+.compare th, .compare td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: center; vertical-align: middle; }
+.compare thead th { background: var(--soft); font-weight: 800; }
+.compare tbody th { text-align: left; font-weight: 600; }
+.compare th:first-child { width: 50%; }
+.compare .pro-col { background: #f3f1fd; font-weight: 700; }
+.compare thead .pro-col { background: var(--main); color: #fff; }
+.compare tr:last-child th, .compare tr:last-child td { border-bottom: 0; }
+.compare .yes { color: var(--ok); font-weight: 900; font-size: 1.1rem; }
+.compare .no { color: #b0b6c0; }

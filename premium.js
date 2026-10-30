@@ -1,27 +1,41 @@
-// ScamShield Email Guard subscription, paid through CashCow (Stripe checkout).
+// ScamShield Premium (includes Email Guard), paid through CashCow (Stripe checkout).
 // After paying, Stripe sends the person back here with ?session_id=..., and the
 // app asks CashCow whether that purchase is paid (and, for subscriptions, still active).
 import { currentToken } from "./account.js";
 
 const API = "https://cashcow-reviews-api.onrender.com";
-const APP = "emailguard";
+const APP = "scamshield";
 const KEY = "seg-premium";
 const RECHECK_MS = 3 * 24 * 60 * 60 * 1000;
 
 export const PLANS = [
-  { id: "seg_monthly", label: "Monthly", price: "$2.99", per: "/month" },
-  { id: "seg_yearly", label: "Yearly", price: "$19.99", per: "/year", note: "Save 44%", best: true },
-  { id: "seg_lifetime", label: "Lifetime", price: "$39.99", per: "one time", note: "Pay once" },
+  { id: "ssp_monthly", label: "Monthly", price: "$29", per: "/month" },
+  { id: "ssp_yearly", label: "Yearly", price: "$249", per: "/year", note: "Save 28%", best: true },
 ];
 
 export const PREMIUM_FEATURES = [
-  "Forward any email and get a scam check back in about a minute",
-  "Automatic protection: with Gmail forwarding on, every new email is checked, and you're alerted only when something looks wrong",
-  "Up to 3 email addresses, and a history of every check",
+  "Unlimited email checks: forward anything suspicious and get an answer in about a minute",
+  "Automatic protection: with Gmail forwarding on, every new email is checked and you're alerted only when something looks wrong",
+  "Up to 3 email addresses and a history of every check",
+  "Plus everything else in ScamShield Premium",
 ];
 
-export const PREMIUM_THANKS = "Email Guard is on. Forward a suspicious email to try it.";
-export const PREMIUM_FREE_NOTE = "Turn on Email Guard to get:";
+// Free vs Premium chart. true = included, false = not included, text = shown as is.
+export const COMPARE = [
+  ["Forward an email and get a scam check back", "3 a month", "Unlimited"],
+  ["Plain-English reasons for every verdict", true, true],
+  ["Fake-link and look-alike website detection", true, true],
+  ["Dangerous attachment warnings", true, true],
+  ["Automatic check of every new Gmail email", false, true],
+  ["Alerts only when something looks wrong", false, true],
+  ["Email addresses protected", "Up to 3", "Up to 3"],
+  ["History of your checks", true, true],
+  ["All other ScamShield Premium features", false, true],
+  ["Price", "Free", "$29/month or $249/year"],
+];
+
+export const PREMIUM_THANKS = "ScamShield Premium is on, including unlimited Email Guard checks and automatic protection.";
+export const PREMIUM_FREE_NOTE = "Free ScamShield accounts get 3 email checks a month. ScamShield Premium adds:";
 
 function read() {
   try {

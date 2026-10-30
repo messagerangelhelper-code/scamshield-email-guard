@@ -8,7 +8,8 @@ when something looks wrong.
 - Step-by-step Gmail setup; Email Guard passes along Gmail's forwarding code automatically.
 - History of recent checks. Emails themselves aren't stored; only sender, subject and result.
 
-Its own subscription through CashCow: $2.99/mo, $19.99/yr or $39.99 once.
+Free CashCow accounts get 3 email checks a month. ScamShield Premium ($29/mo or $249/yr, through CashCow)
+adds unlimited checks and automatic protection.
 The scanning runs on the CashCow server (mail.py in CashCow-).
 
 ## Render (Static Site)
